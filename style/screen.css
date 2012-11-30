@@ -2,14 +2,22 @@ body {
   font-family: 'Open Sans', sans-serif;
   background: url(../images/bg.png) no-repeat top center;
   text-align: center;
+  color: #111;
+  font-size: 16px;
+}
+
+a {
+    color: #111;
 }
 
 h1 {
+    font-size: 46px;
+    /*font-weight: normal;*/
+    /*color: #FFF;*/
+}
+
+canvas {
     display: none;
-    font-size: 140px;
-    font-weight: normal;
-    line-height: 100%;
-    color: #FFF;
 }
 
 #loading {
@@ -21,25 +29,23 @@ h1 {
     left: 0;
 
 }
-#controls {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-indent: 0;
-    width: 1200px;
-    position: relative;
-    margin: auto;
-}
-#controls li {
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  top: 0
+
+#intro {
+    width: 460px;
+    background-color: #FFF;
+    color: #333;
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 12px;
+    margin-top: 200px;
 }
 
-#controls .bass {background: url(../images/bass.png); left: 0}
-#controls .drums {background: url(../images/drums.png); left: 200px}
-#controls .keys {background: url(../images/keys.png); left: 400px}
-#controls .guitar {background: url(../images/guitar.png); right: 400px}
-#controls .synth {background: url(../images/synth.png); right: 200px}
-#controls .voice {background: url(../images/voice.png); right: 0}
+#intro p {
+    font-size: 30px
+}
+
+#intro a {
+    font-weight: bold;
+    font-size: 36px;
+}

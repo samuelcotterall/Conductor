@@ -1,5 +1,21 @@
 var context = new webkitAudioContext();
 
+function play(){
+  console.log("PLAY"); 
+  $('canvas').show();
+  for (var i = 0; i < tracks.length; i++) {
+    var currentTrack = tracks[i];  
+    currentTrack.source.noteOn(0);
+    $("#intro").fadeOut();
+  };
+
+}
+
+$("#play").on('click',function(){
+  play();
+  return false;
+})
+
 function ready(){
   
   for (var i = 0; i < tracks.length; i++) {
@@ -9,7 +25,7 @@ function ready(){
     currentTrack.source = context.createBufferSource();
     currentTrack.source.buffer = currentTrack.buffer;    
     currentTrack.source.connect(context.destination);
-    currentTrack.source.noteOn(0);              
+
 
   };  
   console.log("Tracks", tracks);
@@ -59,7 +75,7 @@ var tracks = [
     "file": "../audio/1901/Keys.mp3"
   },
   {
-    "file": "../audio/1901/Rythm Guitar.mp3"
+    "file": "../audio/1901/RythmGuitar.mp3"
   },
   {
     "file": "../audio/1901/synth.mp3"
