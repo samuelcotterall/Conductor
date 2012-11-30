@@ -112,31 +112,133 @@ function Game()
 
 	this.pushTriggers = function()
 	{
-		this.TRIGGERS.push(
+		var i = 0;
+		while (i < 4)
 		{
-			gizmo : 'topLeft',
-			type : 'zone',
-			x : 0,
-			y : 0,
-			xs : 8, // out og 64
-			ys : 8, // out of 48
-			action : this.logHello,
-			need : 12
-		}
-		);
+			this.TRIGGERS.push(
+			{
+				gizmo : 'instrument1',
+				type : 'zone',
+				x : 0,
+				y : 24 + i * 6,
+				xs : 6, // out og 64
+				ys : 6, // out of 48
+				action : this.logHello,
+				need : 5,
+				parameter : 1
+			});
+			++i;
+		}	
 
-		this.TRIGGERS.push(
+		i = 0;
+		while (i < 4)
 		{
-			gizmo : 'new one',
-			type : 'zone',
-			x : 20,
-			y : 10,
-			xs :12, // out og 64
-			ys : 12, // out of 48
-			action : this.logHello,
-			need : 5
+			this.TRIGGERS.push(
+			{
+				gizmo : 'instrument2',
+				type : 'zone',
+				x : 6,
+				y : 18 + i * 6,
+				xs : 6, // out og 64
+				ys : 6, // out of 48
+				action : this.logHello,
+				need : 6,
+				parameter : 1
+			});
+			++i;
 		}
-		);
+
+		i = 0;
+		while (i < 4)
+		{
+			this.TRIGGERS.push(
+			{
+				gizmo : 'instrument3',
+				type : 'zone',
+				x : 12,
+				y : 12 + i * 6,
+				xs : 6, // out og 64
+				ys : 6, // out of 48
+				action : this.logHello,
+				need : 7,
+				parameter : 1
+			});
+			++i;
+		}
+
+		i = 0;
+		while (i < 4)
+		{
+			this.TRIGGERS.push(
+			{
+				gizmo : 'instrument4',
+				type : 'zone',
+				x : 18,
+				y : 6 + i * 6,
+				xs : 6, // out og 64
+				ys : 24, // out of 48
+				action : this.logHello,
+				need : 7,
+				parameter : 1
+			});
+			++i;
+		}
+
+		i = 0;
+		while (i < 4)
+		{
+			this.TRIGGERS.push(
+			{
+				gizmo : 'instrument1',
+				type : 'zone',
+				x : 24,
+				y : i * 6,
+				xs : 6, // out og 64
+				ys : 24, // out of 48
+				action : this.logHello,
+				need : 8,
+				parameter : 1
+			});
+			++i;
+		}
+
+		var i = 0;
+		while (i < 12)
+		{
+			this.TRIGGERS.push(
+			{
+				gizmo : 'rythme' + i,
+				type : 'zone',
+				x : 32,
+				y : i * 4,
+				xs : 16, // out og 64
+				ys : 4, // out of 48
+				action : this.logHello,
+				need : 5,
+				parameter : 1
+			});	
+			++i;
+		}
+
+		var i = 4;
+		while (i < 12)
+		{
+			this.TRIGGERS.push(
+			{
+				gizmo : 'rythme' + i,
+				type : 'zone',
+				x : i * 4 + 16,
+				y : 32,
+				xs : 4, // out og 64
+				ys : 32, // out of 48
+				action : this.logHello,
+				need : 5,
+				parameter : 1
+			});	
+			++i;
+		}
+		
+
 	}
 
 	this.logHello = function()
@@ -235,7 +337,7 @@ function Game()
 		ctx.fillStyle = '#000';
 		var x = 0;
 		var dx = this.WIDTH / 64 | 0;
-		var dy = this.WIDTH / 48 | 0;
+		var dy = this.HEIGHT / 48 | 0;
 		while (x < 64)
 		{
 			var y =0;
