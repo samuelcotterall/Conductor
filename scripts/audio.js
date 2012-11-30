@@ -52,20 +52,20 @@ var tracks = [
   {
     "file": "../audio/1901/Bass.mp3"
   },
-    {
+  {
     "file": "../audio/1901/Drums.mp3"
   },
-    {
+  {
     "file": "../audio/1901/Keys.mp3"
   },
-    {
-  "file": "../audio/1901/Rythm Guitar.mp3"
+  {
+    "file": "../audio/1901/Rythm Guitar.mp3"
   },
-    {
+  {
     "file": "../audio/1901/synth.mp3"
   },
   {
-  "file": "../audio/1901/Voice.mp3"
+    "file": "../audio/1901/Voice.mp3"
   }
 ];
 
