@@ -112,144 +112,41 @@ function Game()
 
 	this.pushTriggers = function()
 	{
-		var i = 0;
-		while (i < 4)
+		var j = 0;
+		while (j < 6)
 		{
-			this.TRIGGERS.push(
+			var i = 0;
+			while (i < 4)
 			{
-				gizmo : 'instrument1',
-				type : 'zone',
-				x : 0,
-				y : 24 + i * 6,
-				xs : 6, // out og 64
-				ys : 6, // out of 48
-				action : this.logHello,
-				need : 5,
-				parameter : 1
-			});
-			++i;
+				this.TRIGGERS.push(
+				{
+					gizmo : 'instrument' + j,
+					type : 'zone',
+					x : 5 + j * 10,
+					y : 4  + i * 6,
+					xs : 5, // out og 64
+					ys : 6, // out of 48
+					action : this.contorlInstrument,
+					need : 5,
+					parameter : [j, 3 - i]
+				});
+				++i;
+			}
+			++j;
 		}	
-
-		i = 0;
-		while (i < 4)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'instrument2',
-				type : 'zone',
-				x : 6,
-				y : 18 + i * 6,
-				xs : 6, // out og 64
-				ys : 6, // out of 48
-				action : this.logHello,
-				need : 6,
-				parameter : 1
-			});
-			++i;
-		}
-
-		i = 0;
-		while (i < 4)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'instrument3',
-				type : 'zone',
-				x : 12,
-				y : 12 + i * 6,
-				xs : 6, // out og 64
-				ys : 6, // out of 48
-				action : this.logHello,
-				need : 7,
-				parameter : 1
-			});
-			++i;
-		}
-
-		i = 0;
-		while (i < 4)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'instrument4',
-				type : 'zone',
-				x : 18,
-				y : 6 + i * 6,
-				xs : 6, // out og 64
-				ys : 24, // out of 48
-				action : this.logHello,
-				need : 7,
-				parameter : 1
-			});
-			++i;
-		}
-
-		i = 0;
-		while (i < 4)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'instrument1',
-				type : 'zone',
-				x : 24,
-				y : i * 6,
-				xs : 6, // out og 64
-				ys : 24, // out of 48
-				action : this.logHello,
-				need : 8,
-				parameter : 1
-			});
-			++i;
-		}
-
-		var i = 0;
-		while (i < 12)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'rythme' + i,
-				type : 'zone',
-				x : 32,
-				y : i * 4,
-				xs : 16, // out og 64
-				ys : 4, // out of 48
-				action : this.logHello,
-				need : 5,
-				parameter : 1
-			});	
-			++i;
-		}
-
-		var i = 4;
-		while (i < 12)
-		{
-			this.TRIGGERS.push(
-			{
-				gizmo : 'rythme' + i,
-				type : 'zone',
-				x : i * 4 + 16,
-				y : 32,
-				xs : 4, // out og 64
-				ys : 32, // out of 48
-				action : this.logHello,
-				need : 5,
-				parameter : 1
-			});	
-			++i;
-		}
-		
-
 	}
 
-	this.logHello = function()
-	{
-		console.log('Hello')
-	}
 
 	this.initTriggers = function()
 	{
 		this.pushTriggers();
 
+	}
+
+	this.contorlInstrument = function(para)
+	{
+	//	console.log("Change Track to ", para[0], para[1]);
+		tracks[para[0]].source.gain.value = .1 +  .3 * para[1];
 	}
 
 	this.runZone = function(trigger)
@@ -270,7 +167,7 @@ function Game()
 
 		if (intensityInTrigger > trigger.need)
 		{
-			trigger.action();
+			trigger.action(trigger.parameter);
 			trigger.active = 1;
 		}	
 		else
@@ -382,7 +279,6 @@ function Game()
 	{
 		// Context to use !
 		var ctx = this.ctx;
-
 
 		if (this.frameIntensity > 0)
 		{
