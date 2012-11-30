@@ -2,6 +2,22 @@ body {
   font-family: 'Open Sans', sans-serif;
   background: url(../images/bg.png) no-repeat top center;
   text-align: center;
+  color: #111;
+  font-size: 16px;
+}
+
+a {
+    color: #111;
+}
+
+h1 {
+    font-size: 46px;
+    /*font-weight: normal;*/
+    /*color: #FFF;*/
+}
+
+canvas {
+    display: none;
 }
 
 #loading {
@@ -12,4 +28,24 @@ body {
     top: 0;
     left: 0;
 
+}
+
+#intro {
+    width: 460px;
+    background-color: #FFF;
+    color: #333;
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 12px;
+    margin-top: 200px;
+}
+
+#intro p {
+    font-size: 30px
+}
+
+#intro a {
+    font-weight: bold;
+    font-size: 36px;
 }
