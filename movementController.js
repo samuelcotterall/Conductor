@@ -347,7 +347,7 @@ function Game()
 			{
 				ctx.fill();		
 			}
-			else if (this.ACTIVE[trigger.parameter[0]] => trigger.parameter[1])
+			else if (this.ACTIVE[trigger.parameter[0]] >= trigger.parameter[1])
 			{
 				ctx.globalAlpha = 0.5;
 				ctx.fill();
