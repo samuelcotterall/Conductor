@@ -26,7 +26,6 @@ function ready(){
     currentTrack.source.buffer = currentTrack.buffer;    
     currentTrack.source.connect(context.destination);
 
-
   };  
   console.log("Tracks", tracks);
 
@@ -49,7 +48,9 @@ function loadTracks(trackNumber) {
       console.log('Loading track', i);
 
       if (i === (tracks.length - 1)) {
-        $("#loading").fadeOut();
+        $("#loading").fadeOut(function(){
+          $("#intro").find('a').fadeIn();  
+        });
         ready();
       }
 
