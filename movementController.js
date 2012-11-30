@@ -16,6 +16,22 @@ navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 // hack OVER
 
+var SPRITES = {};
+
+function loadSprite(key, path)
+{
+	var image = new Image();
+	image.src = './images/' + path + '.png';
+	SPRITES[key] = image;
+}
+
+loadSprite('bass', 'instruments/bass');
+loadSprite('drums', 'instruments/drums');
+loadSprite('guitar', 'instruments/guitar');
+loadSprite('keys', 'instruments/keys');
+loadSprite('synth', 'instruments/synth');
+loadSprite('voice', 'instruments/voice');
+
 function Game()
 {
 	this.WIDTH = 0;
@@ -116,19 +132,54 @@ function Game()
 		while (j < 6)
 		{
 			var i = 0;
-			while (i < 4)
+			while (i < 6)
 			{
+				var dx = 0;
+				var dy = 0;
+				if (i == 0)
+					dx = 15;
+				if (i == 1)
+					dx = 11;
+				if (i == 2)
+				{
+					dx = 8;
+					dy = 2;
+				}
+				if (i == 3)
+				{
+					dx = 6;
+					dy = 4;
+				}
+				if (i == 4)
+				{
+					dx = 5;
+					dy = 7;
+				}
+				if (i == 5)
+				{
+					dx = 5;
+					dy = 10;
+				}
+
+				if (j < 3)
+					dy += j * 5;
+				else
+				{
+					dx = -dx + 29;
+					dy += (5 - j) * 5;
+				} 
+	
 				this.TRIGGERS.push(
 				{
 					gizmo : 'instrument' + j,
 					type : 'zone',
-					x : 5 + j * 10,
-					y : 4  + i * 6,
-					xs : 5, // out og 64
-					ys : 6, // out of 48
+					x : j * 8 + dx - 4 | 0 ,
+					y : 3 + i * 4 + dy,
+					xs : 4, // out og 64
+					ys : 4, // out of 48
 					action : this.contorlInstrument,
-					need : 5,
-					parameter : [j, 3 - i]
+					need : 3,
+					parameter : [j, 5 - i]
 				});
 				++i;
 			}
@@ -136,6 +187,7 @@ function Game()
 		}	
 	}
 
+	this.ACTIVE = [0,0,0,0,0,0];
 
 	this.initTriggers = function()
 	{
@@ -146,7 +198,8 @@ function Game()
 	this.contorlInstrument = function(para)
 	{
 	//	console.log("Change Track to ", para[0], para[1]);
-		tracks[para[0]].source.gain.value = .1 +  .3 * para[1];
+		tracks[para[0]].source.gain.value = .1 +  .15 * para[1];
+		game.ACTIVE[para[0]] = para[1];
 	}
 
 	this.runZone = function(trigger)
@@ -229,6 +282,139 @@ function Game()
 		this.frameIntensity = intensity;
 	}
 
+	this.PARTICLES = [];
+
+	this.pushParticles = function()
+	{
+		var ctx = this.ctx;
+		var x = 0;
+		var dx = this.WIDTH / 64 | 0;
+		var dy = this.HEIGHT / 48 | 0;
+		while (x < 64)
+		{
+			var y =0;
+			while (y < 48)
+			{
+			  if (this.map[x][y])
+			  {
+			  	this.PARTICLES.push({
+			  		x : x * dx + 1,
+			  		y : y * dy + 1,
+			  		s : dx
+			  	});
+
+			 	ctx.fillRect(x * dx + 1, y * dy + 1, dx - 2, dy -2);
+			  }
+			  ++y;
+			}
+			++x;
+		}
+	}
+
+	this.renderParticles = function(ctx)
+	{
+		ctx.fillStyle = '#fff';
+		var i = 0;
+		while (i < this.PARTICLES.length)
+		{
+			var p = this.PARTICLES[i];
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2, true);
+			p.y -= p.s;
+			p.x += Math.random() * 10 - 5 | 0;
+			ctx.globalAlpha = Math.random();
+			ctx.fill();
+			p.s--;
+			if (p.s == 0)
+			{
+				this.PARTICLES.splice(i--, 1);
+			}
+			++i;
+		}
+	}
+
+	this.renderIncredible = function(ctx)
+	{
+		var ctx = this.ctx;
+
+		if (this.frameIntensity > 0)
+		{
+			this.pushParticles();
+		}
+		this.ctx.clearRect(0,0, this.WIDTH, this.HEIGHT);
+
+		this.renderParticles(ctx);
+
+		ctx.globalAlpha = .7;
+
+		var dx = this.WIDTH / 64 | 0;
+		var dy = this.HEIGHT / 48 | 0;
+		ctx.fillStyle = '#0a8';
+		ctx.strokeStyle = '#0a8';
+		ctx.shadowColor="#0a8";
+        ctx.shadowBlur = 10;  
+		var i = 0;
+		while (i < this.TRIGGERS.length)
+		{
+			var trigger = this.TRIGGERS[i];
+			ctx.beginPath();
+			ctx.arc(dx * (trigger.x + 2), dy * (trigger.y + 2), dx * trigger.xs / 2, 0, Math.PI * 2, true);
+			if (trigger.active)
+			{
+				ctx.fill();		
+			}
+			else if (this.ACTIVE[trigger.parameter[0]] >= trigger.parameter[1])
+			{
+				ctx.globalAlpha = 0.3;
+				ctx.fill();
+				ctx.globalAlpha = .70;
+			}
+			else
+			{
+				ctx.stroke();
+			}
+
+			++i;
+		}
+		ctx.shadowBlur = 0; 
+ 
+		ctx.drawImage(SPRITES['bass'], 11.5 * dx,  3*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['drums'], 19.5 * dx,  8*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['keys'], 27.5 * dx,  14*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['guitar'], 34.5 * dx,  13*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['synth'], 42.75 * dx,  8.5*dy, 2.5*dx, 2.5*dx);
+		ctx.drawImage(SPRITES['voice'], 50.5 * dx,  3*dy, 2.5*dx, 2.5*dx);
+ 		ctx.globalAlpha = 1.0;
+ 		/*
+		var dx = this.WIDTH / 64 | 0;
+		var dy = this.HEIGHT / 48 | 0;
+
+		ctx.fillStyle = '#F00';
+		ctx.strokeStyle = '#F00';
+		var i = 0;
+		while (i < this.TRIGGERS.length)
+		{
+			var trigger = this.TRIGGERS[i];
+			if (trigger.active)
+			{
+				if (trigger.type === 'zone')
+				{
+					ctx.fillRect(dx * trigger.x, dy * trigger.y, dx * trigger.xs, dy * trigger.ys);		
+				}
+			}
+			else
+			{
+				if (trigger.type === 'zone')
+				{
+					ctx.strokeRect(dx * trigger.x, dy * trigger.y, dx * trigger.xs, dy * trigger.ys);		
+					ctx.fillText(trigger.gizmo, trigger.x * dx + 10, trigger.y * dy + 20);
+				}
+			}
+			++i;
+		}
+		  */
+	}
+
 	this.renderDebug = function(ctx)
 	{
 		ctx.fillStyle = '#000';
@@ -249,7 +435,7 @@ function Game()
 			++x;
 		}
 
-		var i = 0;
+		/*var i = 0;
 
 		ctx.fillStyle = '#F00';
 		ctx.strokeStyle = '#F00';
@@ -273,6 +459,7 @@ function Game()
 			}
 			++i;
 		}
+		 */
 	}
 
 	this.render = function()
@@ -284,8 +471,9 @@ function Game()
 		{
 			// Clear screen
 			ctx.fillStyle = '#fff';
+			ctx.globalAlpha = 0.2;
 			ctx.fillRect(0,0,this.WIDTH, this.HEIGHT);
-
+			ctx.globalAlpha = 1.0;
 			this.renderDebug(ctx);
 		}
 	}
@@ -300,7 +488,7 @@ function Game()
 		
 		// SECOND  Manage visualisation
 		
-		game.render();
+		game.renderIncredible();
 		requestAnimFrame(game.run);
 	}
 }
