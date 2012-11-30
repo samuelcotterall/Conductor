@@ -16,6 +16,22 @@ navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 // hack OVER
 
+var SPRITES = {};
+
+function loadSprite(key, path)
+{
+	var image = new Image();
+	image.src = './images/' + path + '.png';
+	SPRITES[key] = image;
+}
+
+loadSprite('bass', 'instruments/bass');
+loadSprite('drums', 'instruments/drums');
+loadSprite('guitar', 'instruments/guitar');
+loadSprite('keys', 'instruments/keys');
+loadSprite('synth', 'instruments/synth');
+loadSprite('voice', 'instruments/voice');
+
 function Game()
 {
 	this.WIDTH = 0;
@@ -329,7 +345,7 @@ function Game()
 
 		this.renderParticles(ctx);
 
-		ctx.globalAlpha = 1.0;
+		ctx.globalAlpha = .7;
 
 		var dx = this.WIDTH / 64 | 0;
 		var dy = this.HEIGHT / 48 | 0;
@@ -349,9 +365,9 @@ function Game()
 			}
 			else if (this.ACTIVE[trigger.parameter[0]] >= trigger.parameter[1])
 			{
-				ctx.globalAlpha = 0.5;
+				ctx.globalAlpha = 0.3;
 				ctx.fill();
-				ctx.globalAlpha = 1.0;
+				ctx.globalAlpha = .70;
 			}
 			else
 			{
@@ -362,7 +378,13 @@ function Game()
 		}
 		ctx.shadowBlur = 0; 
  
-
+		ctx.drawImage(SPRITES['bass'], 11.5 * dx,  3*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['drums'], 19.5 * dx,  8*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['keys'], 27.5 * dx,  14*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['guitar'], 34.5 * dx,  13*dy, 3*dx, 3*dx);
+		ctx.drawImage(SPRITES['synth'], 42.75 * dx,  8.5*dy, 2.5*dx, 2.5*dx);
+		ctx.drawImage(SPRITES['voice'], 50.5 * dx,  3*dy, 2.5*dx, 2.5*dx);
+ 		ctx.globalAlpha = 1.0;
  		/*
 		var dx = this.WIDTH / 64 | 0;
 		var dy = this.HEIGHT / 48 | 0;

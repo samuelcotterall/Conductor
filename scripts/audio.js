@@ -36,7 +36,6 @@ function loadTracks(trackNumber) {
 
   var request = new XMLHttpRequest(),
       i = trackNumber;
-
   request.open('GET', tracks[i].file, true);
   request.responseType = 'arraybuffer';
   
