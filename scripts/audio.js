@@ -33,6 +33,7 @@ function loadTracks(trackNumber) {
       console.log('Loading track', i);
 
       if (i === (tracks.length - 1)) {
+        $("#loading").fadeOut();
         ready();
       }
 
